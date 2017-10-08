@@ -1,5 +1,6 @@
 var express = require('express');
 var validate = require('express-validation');
+var loginValidation = require('../validation/login.js');
 var router = express.Router();
 
 // Import the model (xspency.js) to use its database functions.
@@ -18,16 +19,17 @@ router.get('/', function(req, res) {
 });
 
 // Log in route to determine manager or employee function
-router.post('/api/login', validate(validation.login), function(req, res) {
+router.post('/api/login', validate(loginValidation), function(req, res) {
   //check login credentials against DB and return data based on user type
-  xspency.login(function(data) {
-    var hbsObject = {
-      user: data
-    };
-    console.log(hbsObject);
-    if (data.type === 'employee') res.render('employee', hbsObject);
-    if (data.type === 'manager') res.render('manager', hbsObject);
-  });
+//   xspency.login(function(data) {
+//     var hbsObject = {
+//       user: data
+//     };
+//     console.log(hbsObject);
+//     if (data.type === 'employee') res.render('employee', hbsObject);
+//     if (data.type === 'manager') res.render('manager', hbsObject);
+//   });
+    res.json({test: 'response'});
 });
 
 // Add new expense line
