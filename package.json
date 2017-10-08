@@ -30,5 +30,8 @@
     "mysql": "^2.15.0",
     "sequelize": "^4.13.5",
     "validation": "0.0.1"
+  },
+  "devDependencies": {
+    "chai-http": "^3.0.0"
   }
 }
