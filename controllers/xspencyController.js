@@ -11,7 +11,7 @@ router.get('/', function(req, res) {
   res.render('login', {});
   //   xspency.all(function(data) {
   //     var hbsObject = {
-  //       cats: data
+  //       user: data
   //     };
   //     console.log(hbsObject);
   //     res.render('login', hbsObject);
@@ -39,6 +39,7 @@ router.post('/api/expenses', function(req, res) {
   //   [
   //     'empId',
   //     'empName',
+  //     'expName',
   //     'date',
   //     'duration',
   //     'type',
@@ -48,6 +49,7 @@ router.post('/api/expenses', function(req, res) {
   //   [
   //     req.body.empId,
   //     req.body.empName,
+  //     req.body.expName,
   //     req.body.date,
   //     req.body.duration,
   //     req.body.type,
