@@ -12,6 +12,24 @@ chai.use(chaiHttp);
 describe('The Xspency controller', function() {
 
   // Login route testing
+  it('should return a 400 response if there is missing username', function(
+    done
+  ) {
+    var login = {
+      username: '',
+      password: 'Rlgh45'
+    };
+    chai
+      .request(server)
+      .post('/api/login')
+      .type('form')
+      .send(login)
+      .end(function(err, res) {
+        res.should.have.status(400);
+        done();
+      });
+  });
+
   describe('login route', function() {
     it('should return a 400 response if there is missing password', function(
       done
@@ -30,27 +48,9 @@ describe('The Xspency controller', function() {
         });
     });
 
-    it('should return a 400 response if there is missing username', function(
-      done
-    ) {
-      var login = {
-        username: '',
-        password: 'Rlgh45'
-      };
-      chai
-        .request(server)
-        .post('/api/login')
-        .type('form')
-        .send(login)
-        .end(function(err, res) {
-          res.should.have.status(400);
-          done();
-        });
-    });
-
     it('should have valid data input in username', function(done) {
       var login = {
-        username: '*&$(',
+        username: '*&$(`',
         password: 'Rlgh45'
       };
       chai
@@ -99,7 +99,45 @@ describe('The Xspency controller', function() {
   });
 
   //   Add new expense line testing
-  //   describe('expenses route', function() {
+  //   describe('add expenses route', function() {
+  //     it('should have', function(done) {
+  //       var login = {
+
+  //       };
+
+  //       chai
+  //         .request(server)
+  //         .post('/api/expenses')
+  //         .send(login)
+  //         .end(function(err, res) {
+  //           res.should.have.status(400);
+  //           done();
+  //         });
+  //     });
+  //   });
+});
+
+ //   Update an existing expense line testing
+  //   describe('update expenses route', function() {
+  //     it('', function(done) {
+  //       var login = {
+
+  //       };
+
+  //       chai
+  //         .request(server)
+  //         .post('/api/expenses')
+  //         .send(login)
+  //         .end(function(err, res) {
+  //           res.should.have.status(400);
+  //           done();
+  //         });
+  //     });
+  //   });
+});
+
+ //   Delete an existing expense line testing
+  //   describe('delete expenses route', function() {
   //     it('', function(done) {
   //       var login = {
 
