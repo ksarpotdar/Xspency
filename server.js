@@ -17,8 +17,14 @@ app.engine("handlebars", exphbs({ defaultLayout: "main" }));
 app.set("view engine", "handlebars");
 
 // Import routes and give the server access to them.
-var routes = require("./controllers/projectController.js");
+var routes = require("./controllers/xspencyController.js");
 
 app.use("/", routes);
 
+app.use(function(err, req, res, next){
+    res.status(400).json(err);
+  });
+
 app.listen(port);
+
+module.exports = app;
