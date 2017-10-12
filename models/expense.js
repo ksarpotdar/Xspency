@@ -2,11 +2,11 @@ module.exports = function(sequelize, DataTypes) {
 
    var Expense = sequelize.define("Expense", {
 
-      empID: {
-         type: DataTypes.INTEGER,
-         allowNull: false
-      },
-
+      expName: {
+        type: DataTypes.STRING,
+        allowNull: false
+     },
+      
       date: {
          type: DataTypes.DATE,
          allowNull: false
@@ -27,7 +27,7 @@ module.exports = function(sequelize, DataTypes) {
          allowNull: false
       },
 
-      approval: {
+      approved: {
          type: DataTypes.BOOLEAN,
          allowNull: false,
          defaultValue: false
