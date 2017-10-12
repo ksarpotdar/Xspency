@@ -1,60 +1,88 @@
 var express = require('express');
 var validate = require('express-validation');
 var loginValidation = require('../validation/login.js');
+var expenseValidation = require('../validation/expenseValidation.js');
 var router = express.Router();
+var Sequelize = require('sequelize');
 
 // Import the model (xspency.js) to use its database functions.
-var xspency = require('../models/xspency.js');
-
-// Create all our routes and set up logic within those routes where required.
-router.get('/', function(req, res) {
-  res.render('login', {});
-  //   xspency.all(function(data) {
-  //     var hbsObject = {
-  //       user: data
-  //     };
-  //     console.log(hbsObject);
-  //     res.render('login', hbsObject);
-  //   });
-});
+var db = require('../models');
+var Op = Sequelize.Op
 
 // Log in route to determine manager or employee function
 router.post('/api/login', validate(loginValidation), function(req, res) {
-  //check login credentials against DB and return data based on user type
-//   xspency.login(function(data) {
-//     var hbsObject = {
-//       user: data
-//     };
-//     console.log(hbsObject);
-//     if (data.type === 'employee') res.render('employee', hbsObject);
-//     if (data.type === 'manager') res.render('manager', hbsObject);
-//   });
-    res.json({test: 'response'});
+    if (req.body.managerView === 'true') {
+        // Queries the database for manager with entered username and password
+        db.Employee.findAll({attributes:['id'], where:{userId: req.body.username, password: req.body.password, mgrFlag: true}}).then(function(response){
+            if (response.length === 1){
+                // Queries the database for the employee id's that are associated with the manager id 
+                db.Employee.findAll({attributes:['id'], where:{mgrId: response[0].id}}).then(function(response){
+                    // Puts all returned employee id's into an array
+                    var ids = []
+                    response.forEach(function (object){
+                        ids.push(object.id);
+                    });
+                    // Queries for all expenses associated with the returned employee id's in the array 
+                    db.Expense.findAll({where:{EmployeeId: {[Op.in]:ids}}}).then(function(response){
+                        console.log(JSON.stringify(response))    
+                        // Returns all responses in an array of objects 
+                        res.json(response);
+                        // Returns all responses to index handlebar 
+                        // var hbsObject = {
+                        //     expenses: response
+                        //   };
+                        //   //console.log(dbSqlburgers);
+                        //   res.render("index", hbsObject);
+                        // });
+                    })
+                })
+            } else {
+                res.json({response: "no match"})
+            }  
+        });
+    } else {
+  // Queries the database for employee with entered username and password
+        db.Employee.findAll({attributes:['id'], where:{userId: req.body.username, password: req.body.password}}).then(function(response){
+            if (response.length === 1){
+            // Queries for all expenses associated with the returned employee id's in the array 
+                    db.Expense.findAll({where:{EmployeeId: response[0].id}}).then(function(response){
+                        console.log(JSON.stringify(response))    
+                        
+                        res.json(response);
+                        // Returns all responses to index handlebar 
+                        // var hbsObject = {
+                        //     expenses: response
+                        //   };
+                        //   //console.log(dbSqlburgers);
+                        //   res.render("index", hbsObject);
+                        // });
+                    })
+            } else {
+                res.json({response: "no match"})
+            }  
+        });
+    }
 });
 
 // Add new expense line
-router.post('/api/expenses', function(req, res) {
+router.post('/api/expenses', validate(expenseValidation), function(req, res) {
   console.log('add expense route');
-  // xspency.create(
+  // db.Expense.create(
   //   [
-  //     'empId',
-  //     'empName',
   //     'expName',
   //     'date',
   //     'duration',
   //     'type',
   //     'amount',
-  //     'approval'
-  //   ],
+    //   'EmployeeId'
+   //   ],
   //   [
-  //     req.body.empId,
-  //     req.body.empName,
   //     req.body.expName,
   //     req.body.date,
   //     req.body.duration,
   //     req.body.type,
   //     req.body.amount,
-  //     req.body.approval
+//       req.body.EmployeeId
   //   ],
   //   function(result) {
   //     // Send back the ID of the new quote
@@ -64,13 +92,14 @@ router.post('/api/expenses', function(req, res) {
 });
 
 // Update an existing expense line
-router.put('/api/expenses/:id', function(req, res) {
+router.put('/api/expenses/:id', validate(expenseValidation), function(req, res) {
   var condition = 'id = ' + req.params.id;
 
   console.log('update expense route');
 
-  // xspency.update(
+  // db.Expense.update(
   //   {
+  //     expName: req.body.expName,
   //     date: req.body.date,
   //     duration: req.body.duration,
   //     type: req.body.type,
