@@ -9,15 +9,19 @@ var Sequelize = require('sequelize');
 var db = require('../models');
 
 // Relations
-// db.employee.hasMany(db.expenses);
+// db.Employee.hasMany(db.Expense);
 
 var Op = Sequelize.Op;
 
-//router.post('/api/', function(req, res) {})
+router.get('/', function(req, res) {
+  //console.log(dbSqlburgers);
+  res.render('login', {});
+});
 
 // Log in route to determine manager or employee function
-router.post('/api/login', validate(loginValidation), function(req, res) {
-  if (req.body.managerView === 'true') {
+router.get('/api/login', function(req, res) {
+  var mgrView = req.body.managerView;
+  if (mgrView === 'true') {
     // Queries the database for manager with entered username and password
     db.Employee
       .findAll({
@@ -45,22 +49,21 @@ router.post('/api/login', validate(loginValidation), function(req, res) {
                   where: { EmployeeId: { [Op.in]: ids } },
                   include: [
                     {
-                      model: db.employee,
-                      attributes: [['id', 'empName']]
+                      model: db.Employee,
+                      attributes: ['id', 'empName']
                     }
                   ]
                 })
                 .then(function(response) {
                   console.log(JSON.stringify(response));
                   // Returns all responses in an array of objects
-                  res.json(response);
+                  //res.json(response);
                   // Returns all responses to index handlebar
-                  // var hbsObject = {
-                  //     expenses: response
-                  //   };
-                  //   //console.log(dbSqlburgers);
-                  //   res.render("index", hbsObject);
-                  // });
+                  var hbsObject = {
+                    Expense: response
+                  };
+                  console.log(hbsObject);
+                  res.render('manager', hbsObject);
                 });
             });
         } else {
@@ -72,7 +75,10 @@ router.post('/api/login', validate(loginValidation), function(req, res) {
     db.Employee
       .findAll({
         attributes: ['id'],
-        where: { userId: req.body.username, password: req.body.password }
+        where: {
+          userId: req.body.username,
+          password: req.body.password
+        }
       })
       .then(function(response) {
         if (response.length === 1) {
@@ -82,10 +88,14 @@ router.post('/api/login', validate(loginValidation), function(req, res) {
             .then(function(response) {
               console.log(JSON.stringify(response));
 
-              res.json(response);
+              var hbsObject = {
+                Expense: response
+              };
+
+              res.render('employee', hbsObject);
               // Returns all responses to index handlebar
               // var hbsObject = {
-              //     expenses: response
+              //     Expense: response
               //   };
               //   //console.log(dbSqlburgers);
               //   res.render("index", hbsObject);
@@ -108,7 +118,7 @@ router.post('/api/expenses', validate(expenseValidation), function(req, res) {
   //     'duration',
   //     'type',
   //     'amount',
-  //   'EmployeeId'
+  //     'EmployeeId'
   //   ],
   //   [
   //     req.body.expName,
@@ -116,7 +126,7 @@ router.post('/api/expenses', validate(expenseValidation), function(req, res) {
   //     req.body.duration,
   //     req.body.type,
   //     req.body.amount,
-  //       req.body.EmployeeId
+  //     req.body.EmployeeId
   //   ],
   //   function(result) {
   //     // Send back the ID of the new quote
