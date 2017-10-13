@@ -9,7 +9,7 @@ var Sequelize = require('sequelize');
 var db = require('../models');
 
 // Relations
-db.employee.hasMany(db.expenses);
+// db.employee.hasMany(db.expenses);
 
 var Op = Sequelize.Op;
 
@@ -41,12 +41,15 @@ router.post('/api/login', validate(loginValidation), function(req, res) {
               });
               // Queries for all expenses associated with the returned employee id's in the array
               db.Expense
-                .findAll(
-                  { where: { EmployeeId: { [Op.in]: ids } } },
-                  {
-                    include: [{ model: db.employee }]
-                  }
-                )
+                .findAll({
+                  where: { EmployeeId: { [Op.in]: ids } },
+                  include: [
+                    {
+                      model: db.employee,
+                      attributes: [['id', 'empName']]
+                    }
+                  ]
+                })
                 .then(function(response) {
                   console.log(JSON.stringify(response));
                   // Returns all responses in an array of objects
