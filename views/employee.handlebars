@@ -1,1 +1,35 @@
 {{!-- Employee View Goes here --}}
+
+<table>
+    {{#each expense}}
+    <tr>
+        <td>expense.id</td>
+        <td>expense.expName</td>
+        <td>expense.startDate</td>
+        <td>expense.duration</td>
+        <td>expense.type</td>
+        <td>expense.amount</td>
+    </tr>
+    {{/each}}
+</table>
+
+
+
+<h2>Add an Expense</h2>
+<form class="create-form">
+
+    <div class="form-group">
+        <label for="exp">Expense Name:</label>
+        <input type="text" id="ca" name="expName">
+        <label for="date">Start Date:</label>
+        <input type="text" id="ca" name="startDate">
+        <label for="duration">Duration (days):</label>
+        <input type="text" id="ca" name="duration">
+        <label for="exp">Type:</label>
+        <input type="text" id="ca" name="type">
+        <label for="exp">Amount:</label>
+        <input type="text" id="ca" name="amt">
+    </div>
+
+    <button type="submit">Add Expense</button>
+</form>
