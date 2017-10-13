@@ -8,9 +8,6 @@ var Sequelize = require('sequelize');
 // Import the model (xspency.js) to use its database functions.
 var db = require('../models');
 
-// Relations
-// db.Employee.hasMany(db.Expense);
-
 var Op = Sequelize.Op;
 
 router.get('/', function(req, res) {
@@ -19,7 +16,7 @@ router.get('/', function(req, res) {
 });
 
 // Log in route to determine manager or employee function
-router.get('/api/login', function(req, res) {
+router.post('/api/login', function(req, res) {
   var mgrView = req.body.managerView;
   if (mgrView === 'true') {
     // Queries the database for manager with entered username and password
@@ -56,9 +53,8 @@ router.get('/api/login', function(req, res) {
                 })
                 .then(function(response) {
                   console.log(JSON.stringify(response));
-                  // Returns all responses in an array of objects
-                  //res.json(response);
-                  // Returns all responses to index handlebar
+
+                  // Returns all responses to manager handlebar
                   var hbsObject = {
                     Expense: response
                   };
@@ -92,14 +88,8 @@ router.get('/api/login', function(req, res) {
                 Expense: response
               };
 
-              res.render('employee', hbsObject);
               // Returns all responses to index handlebar
-              // var hbsObject = {
-              //     Expense: response
-              //   };
-              //   //console.log(dbSqlburgers);
-              //   res.render("index", hbsObject);
-              // });
+              res.render('employee', hbsObject);
             });
         } else {
           res.json({ response: 'no match' });
@@ -114,17 +104,17 @@ router.post('/api/expenses', validate(expenseValidation), function(req, res) {
   // db.Expense.create(
   //   [
   //     'expName',
-  //     'startDate',
+  //     'date',
   //     'duration',
-  //     'type',
+  //     'costType',
   //     'amount',
   //     'EmployeeId'
   //   ],
   //   [
   //     req.body.expName,
-  //     req.body.startDate,
+  //     req.body.date,
   //     req.body.duration,
-  //     req.body.type,
+  //     req.body.costType,
   //     req.body.amount,
   //     req.body.EmployeeId
   //   ],
@@ -147,9 +137,9 @@ router.put('/api/expenses/:id', validate(expenseValidation), function(
   // db.Expense.update(
   //   {
   //     expName: req.body.expName,
-  //     date: req.body.startDate,
+  //     date: req.body.date,
   //     duration: req.body.duration,
-  //     type: req.body.type,
+  //     type: req.body.costType,
   //     amount: req.body.amount,
   //     approval: req.body.approval
   //   },
