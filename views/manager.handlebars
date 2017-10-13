@@ -1,1 +1,15 @@
 {{!-- Manager View Goes here --}}
+
+<table>
+    {{#each expense}}
+    <tr>
+        <td>expense.Employeeid</td>
+        <td>employee.name</td>
+        <td>expense.expName</td>
+        <td>expense.startDate</td>
+        <td>expense.duration</td>
+        <td>expense.type</td>
+        <td>expense.amount</td>
+    </tr>
+    {{/each}}
+</table>
