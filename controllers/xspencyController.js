@@ -4,11 +4,18 @@ var loginValidation = require('../validation/login.js');
 var expenseValidation = require('../validation/expenseValidation.js');
 var router = express.Router();
 var Sequelize = require('sequelize');
+var hash = require('node_hash');
 
 // Import the model (xspency.js) to use its database functions.
 var db = require('../models');
 
 var Op = Sequelize.Op;
+
+function hashInput(input) {
+  var salt = 'sUp3rS3CRiT$@lt';
+  var salted_sha256 = hash.sha256(input, salt);
+  return salted_sha256;
+}
 
 router.get('/', function(req, res) {
   //console.log(dbSqlburgers);
@@ -18,6 +25,7 @@ router.get('/', function(req, res) {
 // Log in route to determine manager or employee function
 router.post('/api/login', function(req, res) {
   var mgrView = req.body.managerView;
+  var hashpass = hashInput(req.body.password);
   if (mgrView === 'true') {
     // Queries the database for manager with entered username and password
     db.Employee
@@ -25,7 +33,7 @@ router.post('/api/login', function(req, res) {
         attributes: ['id'],
         where: {
           userId: req.body.username,
-          password: req.body.password,
+          password: hashpass,
           mgrFlag: true
         }
       })
@@ -73,7 +81,7 @@ router.post('/api/login', function(req, res) {
         attributes: ['id'],
         where: {
           userId: req.body.username,
-          password: req.body.password
+          password: hashpass
         }
       })
       .then(function(response) {
