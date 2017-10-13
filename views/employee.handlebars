@@ -1,14 +1,14 @@
 {{!-- Employee View Goes here --}}
 
 <table>
-    {{#each expense}}
+    {{#each Expense}}
     <tr>
-        <td>expense.id</td>
-        <td>expense.expName</td>
-        <td>expense.startDate</td>
-        <td>expense.duration</td>
-        <td>expense.type</td>
-        <td>expense.amount</td>
+        <td>{{dataValues.id}}</td>
+        <td>{{dataValues.expName}}</td>
+        <td>{{dataValues.date}}</td>
+        <td>{{dataValues.duration}}</td>
+        <td>{{dataValues.costType}}</td>
+        <td>{{dataValues.amount}}</td>
     </tr>
     {{/each}}
 </table>
