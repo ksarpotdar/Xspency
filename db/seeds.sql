@@ -1,11 +1,11 @@
 -- Test data for employees table.
 INSERT INTO employees (empName, userId, PASSWORD, mgrId, mgrFlag) VALUES 
-	("Sue Smith", "suesmith", "123Sue", 0, TRUE),
-	("John Jones", "jojones", "jj1122", 1, FALSE),
-	("Kelly Highland", "kelhigh", "kel546", 6, FALSE),
-	("Tom Thomas", "tthomas", "tomthom2", 6, FALSE),
-	("Peter Piper", "pepiper", "pep324", 1, FALSE),
-	("Mike Miles", "mmiles", "miles3245", 0, TRUE);
+	("Sue Smith", "suesmith", "1a30451ebc264721b4a5666598c74837517c275409312884d60b2e6619b0f262", 0, TRUE),
+	("John Jones", "jojones", "df38b468d607e6f9c846bd25bdedcee228bc747cee19669bc2dd7b925ccecd08", 1, FALSE),
+	("Kelly Highland", "kelhigh", "94df75a2f258ff8d2647e700b969d2162278156b2c659e481e42c44ba769fc30", 6, FALSE),
+	("Tom Thomas", "tthomas", "8619dc10b0178cb92cc4fa914985f489de5e94fee73efa298b2d403ad294be41", 6, FALSE),
+	("Peter Piper", "pepiper", "114bca384863c789053b76a49b826a84ef6856f2fe8bd5c83e38b8df739c5ca6", 1, FALSE),
+	("Mike Miles", "mmiles", "025998f9fd5394c87857a92ff05d9efdc20fcf06bb54adebd357f02c2cf90b2a", 0, TRUE);
 	
 	SELECT * FROM employees;
   -- To Do: Add for data here!!
