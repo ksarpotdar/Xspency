@@ -2,6 +2,7 @@ var express = require('express');
 var validate = require('express-validation');
 var loginValidation = require('../validation/login.js');
 var expenseValidation = require('../validation/expenseValidation.js');
+var deleteValidation = require('../validation/deleteValidation.js');
 var router = express.Router();
 var Sequelize = require('sequelize');
 var hash = require('node_hash');
@@ -18,12 +19,11 @@ function hashInput(input) {
 }
 
 router.get('/', function(req, res) {
-  //console.log(dbSqlburgers);
   res.render('login', {});
 });
 
 // Log in route to determine manager or employee function
-router.post('/api/login', function(req, res) {
+router.post('/api/login', validate(loginValidation), function(req, res) {
   var mgrView = req.body.managerView;
   var hashpass = hashInput(req.body.password);
   if (mgrView === 'true') {
@@ -71,7 +71,7 @@ router.post('/api/login', function(req, res) {
                 });
             });
         } else {
-          res.json({ response: 'no match' });
+          res.status(401).json({ response: 'Invalid username or password' });
         }
       });
   } else {
@@ -100,86 +100,86 @@ router.post('/api/login', function(req, res) {
               res.render('employee', hbsObject);
             });
         } else {
-          res.json({ response: 'no match' });
+          res.status(401).json({ response: 'Invalid username or password' });
         }
       });
   }
 });
 
 // Add new expense line
-router.post('/api/expenses', validate(expenseValidation), function(req, res) {
+router.post('/api/expense', validate(expenseValidation), function(req, res) {
+  db.Expense
+    .create({
+      expName: req.body.expName,
+      date: req.body.date,
+      duration: req.body.duration,
+      costType: req.body.costType,
+      amount: req.body.amount,
+      EmployeeId: req.body.EmployeeId
+    })
+    .then(function(result) {
+      // Send back the ID of the new quote
+      var responseObj = {
+        recordId: result.dataValues.id
+      };
+      res.status(200).json(responseObj);
+    })
+    .catch(function(err) {
+      res.status(500).json(err);
+    });
   console.log('add expense route');
-  // db.Expense.create(
-  //   [
-  //     'expName',
-  //     'date',
-  //     'duration',
-  //     'costType',
-  //     'amount',
-  //     'EmployeeId'
-  //   ],
-  //   [
-  //     req.body.expName,
-  //     req.body.date,
-  //     req.body.duration,
-  //     req.body.costType,
-  //     req.body.amount,
-  //     req.body.EmployeeId
-  //   ],
-  //   function(result) {
-  //     // Send back the ID of the new quote
-  //     res.json({ id: result.insertId });
-  //   }
-  // );
 });
 
 // Update an existing expense line
-router.put('/api/expenses/:id', validate(expenseValidation), function(
-  req,
-  res
-) {
-  var condition = 'id = ' + req.params.id;
+router.put('/api/expense/:id', validate(expenseValidation), function(req, res) {
+  var condition = { where: { id: req.params.id } };
 
   console.log('update expense route');
 
-  // db.Expense.update(
-  //   {
-  //     expName: req.body.expName,
-  //     date: req.body.date,
-  //     duration: req.body.duration,
-  //     type: req.body.costType,
-  //     amount: req.body.amount,
-  //     approval: req.body.approval
-  //   },
-  //   condition,
-  //   function(result) {
-  //     if (result.changedRows == 0) {
-  //       // If no rows were changed, then the ID must not exist, so 404
-  //       return res.status(404).end();
-  //     } else {
-  //       res.status(200).end();
-  //     }
-  //   }
-  // );
+  db.Expense
+    .update(
+      {
+        expName: req.body.expName,
+        date: req.body.date,
+        duration: req.body.duration,
+        type: req.body.costType,
+        amount: req.body.amount
+        //approval: req.body.approval
+      },
+      condition
+    )
+    .then(function(result) {
+      if (result.changedRows == 0) {
+        // If no rows were changed, then the ID must not exist, so 404
+        return res.status(404).end();
+      } else {
+        res.status(200).end();
+      }
+    })
+    .catch(function(err) {
+      res.status(500).json(err);
+    });
 });
 
 // Delete an existing expense line
-router.put('/api/expenses/:id', function(req, res) {
-  var condition = 'id = ' + req.params.id;
+router.put('/api/expense/delete/:id', validate(deleteValidation), function(req, res) {
+  var condition = { where: { id: req.params.id } };
 
   console.log('delete expense route');
 
-  // xspency.delete(
-  //   condition,
-  //   function(result) {
-  //     if (result.changedRows == 0) {
-  //       // If no rows were changed, then the ID must not exist, so 404
-  //       return res.status(404).end();
-  //     } else {
-  //       res.status(200).end();
-  //     }
-  //   }
-  // );
+  db.Expense
+    .destroy(condition)
+    .then(function(result) {
+      if (result.changedRows == 0) {
+        // If no rows were changed, then the ID must not exist, so 404
+        return res.status(404).end();
+      } else {
+        res.status(200).end();
+      }
+    })
+    .catch(function(err) {
+      res.status(500).json(err);
+    });
 });
 
 // Export routes for server.js to use.
