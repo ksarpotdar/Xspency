@@ -1,6 +1,6 @@
 var express = require('express');
 var validate = require('express-validation');
-var loginValidation = require('../validation/login.js');
+var loginValidation = require('../validation/loginValidation.js');
 var expenseValidation = require('../validation/expenseValidation.js');
 var deleteValidation = require('../validation/deleteValidation.js');
 var router = express.Router();
@@ -22,22 +22,72 @@ router.get('/', function(req, res) {
   res.render('login', {});
 });
 
+//  Employee Expense Page Route
+router.get('/employee/:id', function(req, res) {
+  var emplId = req.params.id;
+  db.Expense
+    .findAll({ where: { EmployeeId: emplId } })
+    .then(function(response) {
+      console.log(JSON.stringify(response));
+
+      var hbsObject = {
+        Expense: response
+      };
+
+      // Returns all responses to index handlebar
+      res.render('employee', hbsObject);
+    });
+});
+
+//  Manager Expense Page Route
+router.get('/manager/:ids', function(req, res) {
+console.log('in mgr route');
+console.log(req.params.ids)
+  var ids = req.params.ids;
+  var idArray = ids.split(',');
+  console.log(ids)
+  db.Expense
+    .findAll({
+      where: { EmployeeId: { [Op.in]: idArray } },
+      include: [
+        {
+          model: db.Employee,
+          attributes: ['id', 'empName']
+        }
+      ]
+    })
+    .then(function(response) {
+      console.log('mgr second promise');
+      //console.log(JSON.stringify(response));
+
+      // Returns all responses to manager handlebar
+      var hbsObject = {
+        Expense: response
+      };
+      console.log(hbsObject);
+      res.render('manager', hbsObject);
+    });
+});
+
 // Log in route to determine manager or employee function
 router.post('/api/login', validate(loginValidation), function(req, res) {
   var mgrView = req.body.managerView;
   var hashpass = hashInput(req.body.password);
+  console.log('in route');
   if (mgrView === 'true') {
+    console.log('mgr path');
     // Queries the database for manager with entered username and password
     db.Employee
       .findAll({
         attributes: ['id'],
         where: {
-          userId: req.body.username,
+          userId: req.body.userId,
           password: hashpass,
-          mgrFlag: true
+          mgrFlag: Boolean(mgrView)
         }
       })
       .then(function(response) {
+        console.log('mgr first promise');
         if (response.length === 1) {
           // Queries the database for the employee id's that are associated with the manager id
           db.Employee
@@ -49,58 +99,31 @@ router.post('/api/login', validate(loginValidation), function(req, res) {
                 ids.push(object.id);
               });
               // Queries for all expenses associated with the returned employee id's in the array
-              db.Expense
-                .findAll({
-                  where: { EmployeeId: { [Op.in]: ids } },
-                  include: [
-                    {
-                      model: db.Employee,
-                      attributes: ['id', 'empName']
-                    }
-                  ]
-                })
-                .then(function(response) {
-                  console.log(JSON.stringify(response));
-
-                  // Returns all responses to manager handlebar
-                  var hbsObject = {
-                    Expense: response
-                  };
-                  console.log(hbsObject);
-                  res.render('manager', hbsObject);
-                });
+              res.status(200).json({ empIds: ids });
             });
         } else {
-          res.status(401).json({ response: 'Invalid username or password' });
+          res.status(200).json({ response: 'Invalid username or password' });
         }
       });
   } else {
     // Queries the database for employee with entered username and password
+    console.log('emp first path');
     db.Employee
       .findAll({
         attributes: ['id'],
         where: {
-          userId: req.body.username,
-          password: hashpass
+          userId: req.body.userId,
+          password: hashpass,
+          mgrFlag: Boolean(mgrView)
         }
       })
       .then(function(response) {
+        console.log('emp first promise');
         if (response.length === 1) {
           // Queries for all expenses associated with the returned employee id's in the array
-          db.Expense
-            .findAll({ where: { EmployeeId: response[0].id } })
-            .then(function(response) {
-              console.log(JSON.stringify(response));
-
-              var hbsObject = {
-                Expense: response
-              };
-
-              // Returns all responses to index handlebar
-              res.render('employee', hbsObject);
-            });
+          res.status(200).json({ id: response[0].id });
         } else {
-          res.status(401).json({ response: 'Invalid username or password' });
+          res.status(200).json({ response: 'Invalid username or password' });
         }
       });
   }
@@ -185,7 +208,7 @@ router.put('/api/expense/delete/:id', validate(deleteValidation), function(
 //     });
 // });
 
-// Populates and refreshes employee expense view 
+// Populates and refreshes employee expense view
 // function expenseLoop() {
 //   db.Expense
 //     .findAll({ where: { EmployeeId: response[0].id } })
