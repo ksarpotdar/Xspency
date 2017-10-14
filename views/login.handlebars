@@ -1,16 +1,21 @@
 {{!-- Login Form --}}
 
-<h1>Xspency</h1>
+<h1 id="login-header">Xspency</h1>
 
-<form>
-    <label for="identification">Login</label>
-    <input type="text" name="username" id="username">
-    <label for="password">Password</label>
-    <input type="password" name="password" id="password">
+<form class="login">
+	<div class="form-group">
+    	<label for="identification">Login</label>
+    	<input type="text" class="form-control" name="username" id="username" placeholder="Username">
+    </div>
+    <div class="form-group">
+    	<label for="password">Password</label>
+    	<input type="password" class="form-control" name="password" id="password" placeholder="Password">
+    </div>
     {{!-- Checkbox to use manager function --}}
-    <label for="managerView">Manager View</label>
-    <input type="checkbox" name="managerView" id="manager">
-    <button type="button" id="login">Login</button>
+	<div class="checkbox">
+    	<label>
+    		<input id="manager" type="checkbox"> Manager View
+    	</label>
+    </div>
+    <button type="submit" class="btn btn-default">Login</button>
 </form>
-
-<script src="/assets/js/login.js"></script>
