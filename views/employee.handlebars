@@ -1,10 +1,11 @@
 {{!-- Employee View Goes here --}}
 
+<h1>Employee View</h1>
+
 <table>
     {{#each Expense}}
     <tr>
         <td><input type="radio" value="{{dataValues.id}}" name="deleteRadio"></td>
-        <td>{{dataValues.id}}</td>
         <td>{{dataValues.expName}}</td>
         <td>{{dataValues.date}}</td>
         <td>{{dataValues.duration}}</td>
@@ -21,16 +22,18 @@
     <input type="hidden" value="{{Expense.0.EmployeeId}}">
     <div class="form-group">
         <label for="exp">Expense Name:</label>
-        <input type="text" id="ca" name="expName">
+        <input type="text" id="expName" name="expName">
         <label for="date">Start Date:</label>
-        <input type="text" id="ca" name="startDate">
+        <input type="text" id="date" name="startDate">
         <label for="duration">Duration (days):</label>
-        <input type="text" id="ca" name="duration">
+        <input type="text" id="duration" name="duration">
         <label for="exp">Type:</label>
-        <input type="text" id="ca" name="type">
+        <input type="text" id="type" name="type">
         <label for="exp">Amount:</label>
-        <input type="text" id="ca" name="amt">
+        <input type="text" id="amt" name="amt">
     </div>
 
     <button type="submit">Add Expense</button>
 </form>
+
+<script src="/assets/js/empexpenses.js"></script>
