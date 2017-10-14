@@ -6,11 +6,8 @@ INSERT INTO employees (empName, userId, PASSWORD, mgrId, mgrFlag) VALUES
 	("Tom Thomas", "tthomas", "8619dc10b0178cb92cc4fa914985f489de5e94fee73efa298b2d403ad294be41", 6, FALSE),
 	("Peter Piper", "pepiper", "114bca384863c789053b76a49b826a84ef6856f2fe8bd5c83e38b8df739c5ca6", 1, FALSE),
 	("Mike Miles", "mmiles", "025998f9fd5394c87857a92ff05d9efdc20fcf06bb54adebd357f02c2cf90b2a", 0, TRUE);
-	
-	SELECT * FROM employees;
-  -- To Do: Add for data here!!
 
--- Test Data for expenses table.
+-- Test data for expenses table.
 INSERT INTO expenses (expName, DATE, duration, costType, amount, approved, EmployeeId) VALUES
 	("San Francisco", "2017-05-20", 3, "Food",           300.00,  TRUE, 4),
 	("San Francisco", "2017-05-20", 3, "Lodging",        1000.00, TRUE, 4),
@@ -30,5 +27,3 @@ INSERT INTO expenses (expName, DATE, duration, costType, amount, approved, Emplo
 	("Charlotte",     "2017-09-04", 1, "Transportation", 130.00,  TRUE, 5),
 	("Washington DC", "2017-10-07", 1, "Food",           125.00,  TRUE, 3),
 	("Washington DC", "2017-10-07", 1, "Transportation", 130.00,  TRUE, 3);
-
-SELECT * FROM expenses;
