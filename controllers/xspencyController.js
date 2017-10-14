@@ -130,39 +130,11 @@ router.post('/api/expense', validate(expenseValidation), function(req, res) {
   console.log('add expense route');
 });
 
-// Update an existing expense line
-router.put('/api/expense/:id', validate(expenseValidation), function(req, res) {
-  var condition = { where: { id: req.params.id } };
-
-  console.log('update expense route');
-
-  db.Expense
-    .update(
-      {
-        expName: req.body.expName,
-        date: req.body.date,
-        duration: req.body.duration,
-        type: req.body.costType,
-        amount: req.body.amount
-        //approval: req.body.approval
-      },
-      condition
-    )
-    .then(function(result) {
-      if (result.changedRows == 0) {
-        // If no rows were changed, then the ID must not exist, so 404
-        return res.status(404).end();
-      } else {
-        res.status(200).end();
-      }
-    })
-    .catch(function(err) {
-      res.status(500).json(err);
-    });
-});
-
 // Delete an existing expense line
-router.put('/api/expense/delete/:id', validate(deleteValidation), function(req, res) {
+router.put('/api/expense/delete/:id', validate(deleteValidation), function(
+  req,
+  res
+) {
   var condition = { where: { id: req.params.id } };
 
   console.log('delete expense route');
@@ -181,6 +153,53 @@ router.put('/api/expense/delete/:id', validate(deleteValidation), function(req, 
       res.status(500).json(err);
     });
 });
+
+// Update an existing expense line
+// router.put('/api/expense/:id', validate(expenseValidation), function(req, res) {
+//   var condition = { where: { id: req.params.id } };
+
+//   console.log('update expense route');
+
+//   db.Expense
+//     .update(
+//       {
+//         expName: req.body.expName,
+//         date: req.body.date,
+//         duration: req.body.duration,
+//         type: req.body.costType,
+//         amount: req.body.amount
+//         //approval: req.body.approval
+//       },
+//       condition
+//     )
+//     .then(function(result) {
+//       if (result.changedRows == 0) {
+//         // If no rows were changed, then the ID must not exist, so 404
+//         return res.status(404).end();
+//       } else {
+//         res.status(200).end();
+//       }
+//     })
+//     .catch(function(err) {
+//       res.status(500).json(err);
+//     });
+// });
+
+// Populates and refreshes employee expense view 
+// function expenseLoop() {
+//   db.Expense
+//     .findAll({ where: { EmployeeId: response[0].id } })
+//     .then(function(response) {
+//       console.log(JSON.stringify(response));
+
+//       var hbsObject = {
+//         Expense: response
+//       };
+
+//       // Returns all responses to index handlebar
+//       res.render('employee', hbsObject);
+//     });
+// }
 
 // Export routes for server.js to use.
 module.exports = router;
