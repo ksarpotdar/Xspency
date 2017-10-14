@@ -38,15 +38,13 @@ module.exports = function(sequelize, DataTypes) {
 
 	  Employee.associate = function(models) {
 		Employee.hasMany(models.Expense, {
-				//foreignKey: 'EmployeeID',
-				sourceKey: 'id'
+				sourceKey: 'id',
+				foreignKey: {
+				 allowNull: false
+				}
 			});
 	  };
-	  // Relations
-// Employee.hasMany(Expense, {
-// 	foreignKey: 'EmployeeID',
-// 	sourceKey: 'id'
-// });
+
 
 
   return Employee;
