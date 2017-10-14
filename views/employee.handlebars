@@ -3,6 +3,7 @@
 <table>
     {{#each Expense}}
     <tr>
+        <td><input type="radio" value="{{dataValues.id}}" name="deleteRadio"></td>
         <td>{{dataValues.id}}</td>
         <td>{{dataValues.expName}}</td>
         <td>{{dataValues.date}}</td>
@@ -17,7 +18,7 @@
 
 <h2>Add an Expense</h2>
 <form class="create-form">
-
+    <input type="hidden" value="{{Expense.0.EmployeeId}}">
     <div class="form-group">
         <label for="exp">Expense Name:</label>
         <input type="text" id="ca" name="expName">
