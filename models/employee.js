@@ -1,6 +1,13 @@
+var Expense = require('./expense');
+
 module.exports = function(sequelize, DataTypes) {
 
    var Employee = sequelize.define("Employee", {
+	id: {
+		type: DataTypes.INTEGER, 
+		autoIncrement: true, 
+		primaryKey: true
+	},
 
     empName: {
          type: DataTypes.STRING,
@@ -26,8 +33,19 @@ module.exports = function(sequelize, DataTypes) {
 		type: DataTypes.BOOLEAN,
 		allowNull: true
 	}
-
+	
   	});
+
+	  Employee.associate = function(models) {
+		Employee.hasMany(models.Expense, {
+				sourceKey: 'id',
+				foreignKey: {
+				 allowNull: false
+				}
+			});
+	  };
+
+
 
   return Employee;
 };

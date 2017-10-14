@@ -1,1 +1,36 @@
 {{!-- Employee View Goes here --}}
+
+<table>
+    {{#each Expense}}
+    <tr>
+        <td><input type="radio" value="{{dataValues.id}}" name="deleteRadio"></td>
+        <td>{{dataValues.id}}</td>
+        <td>{{dataValues.expName}}</td>
+        <td>{{dataValues.date}}</td>
+        <td>{{dataValues.duration}}</td>
+        <td>{{dataValues.costType}}</td>
+        <td>{{dataValues.amount}}</td>
+    </tr>
+    {{/each}}
+</table>
+
+
+
+<h2>Add an Expense</h2>
+<form class="create-form">
+    <input type="hidden" value="{{Expense.0.EmployeeId}}">
+    <div class="form-group">
+        <label for="exp">Expense Name:</label>
+        <input type="text" id="ca" name="expName">
+        <label for="date">Start Date:</label>
+        <input type="text" id="ca" name="startDate">
+        <label for="duration">Duration (days):</label>
+        <input type="text" id="ca" name="duration">
+        <label for="exp">Type:</label>
+        <input type="text" id="ca" name="type">
+        <label for="exp">Amount:</label>
+        <input type="text" id="ca" name="amt">
+    </div>
+
+    <button type="submit">Add Expense</button>
+</form>

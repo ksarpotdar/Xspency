@@ -1,1 +1,15 @@
 {{!-- Manager View Goes here --}}
+
+<table>
+    {{#each Expense}}
+    <tr>
+        <td>{{dataValues.Employee.id}}</td>
+        <td>{{dataValues.Employee.empName}}</td>
+        <td>{{dataValues.expName}}</td>
+        <td>{{dataValues.date}}</td>
+        <td>{{dataValues.duration}}</td>
+        <td>{{dataValues.costType}}</td>
+        <td>{{dataValues.amount}}</td>
+    </tr>
+    {{/each}}
+</table>
