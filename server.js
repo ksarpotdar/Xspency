@@ -2,11 +2,7 @@ var express = require("express");
 var bodyParser = require("body-parser");
 var db = require('./models');
 
-<<<<<<< HEAD
 var port = process.env.port || 3000;
-=======
-var port = process.env.PORT || 3000;
->>>>>>> master
 
 var app = express();
 
