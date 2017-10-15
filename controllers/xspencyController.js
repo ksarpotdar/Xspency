@@ -28,7 +28,6 @@ router.get('/employee/:id', function(req, res) {
   db.Expense
     .findAll({ where: { EmployeeId: emplId } })
     .then(function(response) {
-      console.log(JSON.stringify(response));
 
       var hbsObject = {
         Expense: response
@@ -41,11 +40,8 @@ router.get('/employee/:id', function(req, res) {
 
 //  Manager Expense Page Route
 router.get('/manager/:ids', function(req, res) {
-console.log('in mgr route');
-console.log(req.params.ids)
   var ids = req.params.ids;
   var idArray = ids.split(',');
-  console.log(ids)
   db.Expense
     .findAll({
       where: { EmployeeId: { [Op.in]: idArray } },
@@ -57,14 +53,11 @@ console.log(req.params.ids)
       ]
     })
     .then(function(response) {
-      console.log('mgr second promise');
-      //console.log(JSON.stringify(response));
 
       // Returns all responses to manager handlebar
       var hbsObject = {
         Expense: response
       };
-      console.log(hbsObject);
       res.render('manager', hbsObject);
     });
 });
@@ -73,9 +66,9 @@ console.log(req.params.ids)
 router.post('/api/login', validate(loginValidation), function(req, res) {
   var mgrView = req.body.managerView;
   var hashpass = hashInput(req.body.password);
-  console.log('in route');
+
   if (mgrView === 'true') {
-    console.log('mgr path');
+
     // Queries the database for manager with entered username and password
     db.Employee
       .findAll({
@@ -83,11 +76,10 @@ router.post('/api/login', validate(loginValidation), function(req, res) {
         where: {
           userId: req.body.userId,
           password: hashpass,
-          mgrFlag: Boolean(mgrView)
+          mgrFlag: true
         }
       })
       .then(function(response) {
-        console.log('mgr first promise');
         if (response.length === 1) {
           // Queries the database for the employee id's that are associated with the manager id
           db.Employee
@@ -107,18 +99,16 @@ router.post('/api/login', validate(loginValidation), function(req, res) {
       });
   } else {
     // Queries the database for employee with entered username and password
-    console.log('emp first path');
-    db.Employee
+     db.Employee
       .findAll({
         attributes: ['id'],
         where: {
           userId: req.body.userId,
           password: hashpass,
-          mgrFlag: Boolean(mgrView)
+          mgrFlag: false
         }
       })
       .then(function(response) {
-        console.log('emp first promise');
         if (response.length === 1) {
           // Queries for all expenses associated with the returned employee id's in the array
           res.status(200).json({ id: response[0].id });
@@ -150,7 +140,6 @@ router.post('/api/expense', validate(expenseValidation), function(req, res) {
     .catch(function(err) {
       res.status(500).json(err);
     });
-  console.log('add expense route');
 });
 
 // Delete an existing expense line
@@ -160,7 +149,6 @@ router.put('/api/expense/delete/:id', validate(deleteValidation), function(
 ) {
   var condition = { where: { id: req.params.id } };
 
-  console.log('delete expense route');
 
   db.Expense
     .destroy(condition)
@@ -177,11 +165,11 @@ router.put('/api/expense/delete/:id', validate(deleteValidation), function(
     });
 });
 
+// ToDo: Future Enhancement
 // Update an existing expense line
 // router.put('/api/expense/:id', validate(expenseValidation), function(req, res) {
 //   var condition = { where: { id: req.params.id } };
 
-//   console.log('update expense route');
 
 //   db.Expense
 //     .update(
@@ -208,21 +196,6 @@ router.put('/api/expense/delete/:id', validate(deleteValidation), function(
 //     });
 // });
 
-// Populates and refreshes employee expense view
-// function expenseLoop() {
-//   db.Expense
-//     .findAll({ where: { EmployeeId: response[0].id } })
-//     .then(function(response) {
-//       console.log(JSON.stringify(response));
-
-//       var hbsObject = {
-//         Expense: response
-//       };
-
-//       // Returns all responses to index handlebar
-//       res.render('employee', hbsObject);
-//     });
-// }
 
 // Export routes for server.js to use.
 module.exports = router;
