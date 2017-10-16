@@ -105,8 +105,7 @@ router.post('/api/login', validate(loginValidation), function(req, res) {
         where: {
           userId: req.body.userId,
           password: hashpass,
-          mgrFlag: false
-        }
+           }
       })
       .then(function(response) {
         if (response.length === 1) {
