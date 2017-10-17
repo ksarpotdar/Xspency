@@ -1,17 +1,29 @@
 {{!-- Manager View Goes here --}}
 
-<h1>Manager View</h1>
+<div class="container">
 
-<table>
-    {{#each Expense}}
-    <tr>
-        <td>{{dataValues.Employee.id}}</td>
-        <td>{{dataValues.Employee.empName}}</td>
-        <td>{{dataValues.expName}}</td>
-        <td>{{dataValues.date}}</td>
-        <td>{{dataValues.duration}}</td>
-        <td>{{dataValues.costType}}</td>
-        <td>{{dataValues.amount}}</td>
-    </tr>
-    {{/each}}
-</table>
+    <h1>Manager View</h1>
+
+    <table id="manager-expense-table" class="table table-bordered table-hover">
+        <thead>
+            <td>Employee ID</td>
+            <td>Employee</td>
+            <td>Trip Name</td>
+            <td>Date</td>
+            <td>Duration (Days)</td>
+            <td>Type</td>
+            <td>Amount</td>
+        </thead>
+        {{#each Expense}}
+        <tr>
+            <td>{{dataValues.Employee.id}}</td>
+            <td>{{dataValues.Employee.empName}}</td>
+            <td>{{dataValues.expName}}</td>
+            <td>{{dataValues.date}}</td>
+            <td>{{dataValues.duration}}</td>
+            <td>{{dataValues.costType}}</td>
+            <td>{{dataValues.amount}}</td>
+        </tr>
+        {{/each}}
+    </table>
+</div>
