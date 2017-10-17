@@ -1,6 +1,7 @@
 body {
 	background: #25333d;
 	color: #6edaa1;
+	margin-bottom: 60px;
 }
 
 .login {
@@ -25,8 +26,11 @@ body {
 }
 
 .footer {
+
+	height: 60px;
 	text-align: center;
 	font-size: 18px;
+	background-color: #25333d;
 }
 
 table {
