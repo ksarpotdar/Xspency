@@ -28,3 +28,11 @@ body {
 	text-align: center;
 	font-size: 18px;
 }
+
+table {
+	background-color: white;
+}
+
+thead {
+	background-color: #eee;
+}
