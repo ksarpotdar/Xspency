@@ -1,38 +1,58 @@
 {{!-- Employee View Goes here --}}
 
-<h1>Employee View</h1>
 
-<table>
-    {{#each Expense}}
-    <tr>
-        <td><button type="button" class="deleteButton" data-id="{{dataValues.id}}">x</button></td>
-        <td>{{dataValues.expName}}</td>
-        <td>{{dataValues.date}}</td>
-        <td>{{dataValues.duration}}</td>
-        <td>{{dataValues.costType}}</td>
-        <td>{{dataValues.amount}}</td>
-    </tr>
-    {{/each}}
-</table>
+<div class="container">	
+	<h1>Employee View</h1>
+
+	<table id="emp-expense-table" class="table table-bordered table-hover">
+		<thead>
+			<td>Trip Name</td>
+			<td>Date</td>
+			<td>Duration (Days)</td>
+			<td>Type</td>
+			<td>Amount</td>
+			<td>Remove</td>
+		</thead>
+	    {{#each Expense}}
+	    <tr>
+	        <td>{{dataValues.expName}}</td>
+	        <td>{{dataValues.date}}</td>
+	        <td>{{dataValues.duration}}</td>
+	        <td>{{dataValues.costType}}</td>
+	        <td>{{dataValues.amount}}</td>
+	        <td><button type="button" class="btn btn-danger deleteButton" data-id="{{dataValues.id}}">x</button></td>
+	    </tr>
+	    {{/each}}
+	</table>
+
+	<h2>Add an Expense</h2>
 
 
-<h2>Add an Expense</h2>
-<form class="create-form">
-    <input type="hidden" id="employeeId" value="{{Expense.0.EmployeeId}}">
-    <div class="form-group">
-        <label for="exp">Expense Name:</label>
-        <input type="text" id="expName" name="expName">
-        <label for="date">Start Date:</label>
-        <input type="text" id="date" name="startDate">
-        <label for="duration">Duration (days):</label>
-        <input type="text" id="duration" name="duration">
-        <label for="exp">Type:</label>
-        <input type="text" id="costType" name="type">
-        <label for="exp">Amount:</label>
-        <input type="text" id="amount" name="amt">
-    </div>
+	<form class="create-form">
+	    <input type="hidden" id="employeeId" value="{{Expense.0.EmployeeId}}">
+	    <div class="form-group">
+	        <label for="exp">Expense Name:</label>
+	        <input type="text" class="form-control" id="expName" name="expName">
+	    </div>
+	    <div class="form-group">
+	        <label for="date">Start Date:</label>
+	        <input type="text" class="form-control" id="date" name="startDate">
+	    </div>
+	    <div class="form-group">
+	        <label for="duration">Duration (days):</label>
+	        <input type="text" class="form-control" id="duration" name="duration">
+	    </div>
+	    <div class="form-group">
+	        <label for="exp">Type:</label>
+	        <input type="text" class="form-control" id="costType" name="type">
+	    </div>
+	    <div class="form-group">
+	        <label for="exp">Amount:</label>
+	        <input type="text" class="form-control" id="amount" name="amt">
+	    </div>
 
-    <button type="button" id="addButton">Add Expense</button>
-</form>
+	    <button type="button" class="btn btn-default" id="addButton">Add Expense</button>
+	</form>
+</div>
 
 <script src="/assets/js/empexpenses.js"></script>
