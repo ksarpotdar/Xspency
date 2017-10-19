@@ -21,20 +21,20 @@ npm install
 List of packages:
 
 ```
-    "body-parser": "^1.18.2",
-    "chai": "^4.1.2",
-    "express": "^4.16.1",
-    "express-handlebars": "^3.0.0",
-    "express-validation": "^1.0.2",
-    "handlebars-helper-css": "^0.1.0",
-    "joi": "^11.3.0",
-    "jshint": "^2.9.5",
-    "mocha": "^4.0.1",
-    "mysql": "^2.15.0",
-    "mysql2": "^1.4.2",
-    "node_hash": "^0.2.0",
-    "sequelize": "^4.13.5",
-    "validation": "0.0.1"
+* body-parser
+* chai
+* express
+* express-handlebars
+* express-validation
+* handlebars-helper-css
+* joi
+* jshint
+* mocha
+* mysql
+* mysql2
+* node_hash
+* sequelize
+* validation
 ```
 
 ## Deployment
