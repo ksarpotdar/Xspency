@@ -1,4 +1,4 @@
-# Project 2 - Xspensy
+# Xspency
 
 The goal of this application is to log and create expense reports for business travel.  Employees can log their expenses and see how much they have spent on their business trip and their managers can see all the expenses submitted by their subordinates.
 
